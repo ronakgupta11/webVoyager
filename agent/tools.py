@@ -20,6 +20,10 @@ async def click(state: AgentState):
     except Exception:
         return f"Error: no bbox for : {bbox_id}"
     x, y = bbox["x"], bbox["y"]
+        # Ensure links open in the same tab
+    await page.evaluate("""
+        Array.from(document.querySelectorAll('a[target="_blank"]')).forEach(a => a.target = '_self');
+    """)
     await page.mouse.click(x, y)
     # TODO: In the paper, they automatically parse any downloaded PDFs
     # We could add something similar here as well and generally
